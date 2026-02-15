@@ -147,9 +147,10 @@ input[type=text], input[type=password] {
 /* Extra styles for the cancel button */
 .cancelbtn {
   width: auto;
-  padding: 10px 18px;
+  padding: 9px 18px;
   background-color: White;
   cursor: pointer;
+  margin-right: 80rem;
 }
 
 /* Center the image and position the close button */
@@ -161,9 +162,9 @@ input[type=text], input[type=password] {
 
 img.avatar {
    vertical-align: middle;
-  width: 340px;
+  width: 350px;
   height: 22rem;
-  border-radius: 350px;
+  border-radius: 370px;
   background-size: cover;
   object-fit: fill;
 }

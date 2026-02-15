@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Memories</title>
+    <link rel="stylesheet" href="memo.css">
+
+</head>
+
+<body>
+
+    <div id="particles"></div>
+
+    <!-- Screen 1: Intro -->
+    <div class="container active" id="screen-intro">
+        <h1>Hey Beautiful... ✨</h1>
+        <p>I have something special to show you.</p>
+        <button class="btn" onclick="nextScreen('screen-gallery')">Start Journey ❤️</button>
+    </div>
+
+    <!-- Screen 2: Gallery -->
+    <div class="container" id="screen-gallery">
+        <h1>Our Memories 📸</h1>
+        <p>Every moment with you is a treasure.</p>
+        <div class="gallery-grid">
+            <!-- Replace these sources with your actual image URLs -->
+            <div class="photo-card"><img src="images/New folder/2025-10-10 00_01_25.580+0300.jpg "
+                    alt="Memory 1" style="width: 130px;"></div>
+            <div class="photo-card"><img src="images/New folder/inpaintlab_20260129232536230.jpg"
+                    alt="Memory 2"></div>
+            <!-- <div class="photo-card"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400"
+                    alt="Memory 3"></div> -->
+            <div class="photo-card">
+                <div class="video">
+                    <video width="290" height="160"  controls preload="none">
+                    <source src="VID-20260129-WA0073.mp4" type="video/mp4" style="margin-bottom: 2rem;">
+                    <source src="movie.ogg" type="video/ogg">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <button class="btn" onclick="nextScreen('screen-letter')">Next -></button>
+    </div>
+
+    <!-- Screen 3: Letter -->
+    <div class="container" id="screen-letter">
+        <h1>For You... 💌</h1>
+        <div class="letter-content">
+            <span id="typewriter-text"></span><span class="cursor"></span>
+        </div>
+        <button class="btn" id="letter-next-btn" style="opacity: 0; pointer-events: none;"
+            onclick="nextScreen('screen-proposal')">One Last Thing...</button>
+    </div>
+
+    <!-- Screen 4: Proposal -->
+    <div class="container" id="screen-proposal">
+        <h1>Do you Love me</h1>
+        <p>You are my sunshine, and my everything.</p>
+        <div class="proposal-btns">
+            <button class="btn" id="yesBtn" onclick="acceptProposal()">YES! 😍</button>
+            <button class="btn" id="noBtn" onmouseover="dodgeButton()" ontouchstart="dodgeButton()">No 😢</button>
+        </div>
+    </div>
+
+    <!-- Screen 5: Celebration -->
+    <!-- <div class="container" id="screen-celebration">
+        <h1>I Knew It! 💖</h1>
+        <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Celebration"
+            style="width: 100%; border-radius: 10px; margin-bottom: 20px;">
+        <p>I love you so much! Can't wait for our date! 🥰</p>
+    </div>
+
+    
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mp3">
+    </audio>
+    <div class="music-control" onclick="toggleMusic()">🎵</div> -->
+
+    <script>
+       
+
+        // ACTION: Customize your love letter here
+        const loveLetterText = "I just want to say that I’m very happy to have you in my life — it really means a lot to me. I’ve always wanted to be by your side, and this comes straight from my heart. I love you very much, my sukrti. I have a very important question...";
+        /* --------------------- */
+
+        // Particle System
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.width = Math.random() * 10 + 5 + 'px';
+                p.style.height = p.style.width;
+                p.style.animationDuration = Math.random() * 10 + 10 + 's';
+                p.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(p);
+            }
+        }
+        createParticles();
+
+        // Screen Navigation
+        function nextScreen(targetId) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            const target = document.getElementById(targetId);
+            target.classList.add('active');
+
+            if (targetId === 'screen-intro') {
+                playMusic();
+            }
+            if (targetId === 'screen-letter') {
+                startTypewriter();
+            }
+        }
+
+        // Music Control
+        const music = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+            } else {
+                music.play();
+                isPlaying = true;
+            }
+        }
+
+        function playMusic() {
+            if (!isPlaying) {
+                music.play().then(() => {
+                    isPlaying = true;
+                }).catch(e => console.log("Auto-play blocked"));
+            }
+        }
+
+        // Typewriter Effect
+        let charIndex = 0;
+        function startTypewriter() {
+            const elem = document.getElementById('typewriter-text');
+            elem.innerHTML = "";
+            charIndex = 0;
+            type();
+        }
+
+        function type() {
+            if (charIndex < loveLetterText.length) {
+                const char = loveLetterText.charAt(charIndex);
+                document.getElementById('typewriter-text').innerHTML += char === '\n' ? '<br>' : char;
+                charIndex++;
+                setTimeout(type, 50);
+            } else {
+                // Show next button after typing is done
+                const btn = document.getElementById('letter-next-btn');
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+
+        // "No" Button Interaction
+        let dodgeCount = 0;
+        function dodgeButton() {
+            const btn = document.getElementById('noBtn');
+            const phrases = [
+                "No 😢", "Are you sure?", "Really?", "Think again!",
+                "Don't break my heart 💔", "Please? 🥺", "Last chance!",
+                "You can't say no!", "I'll give you cookies 🍪", "But I love you! ❤️"
+            ];
+
+            // Move button
+            const x = Math.random() * (window.innerWidth - 200);
+            const y = Math.random() * (window.innerHeight - 100);
+
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+
+            // Change text
+            btn.innerText = phrases[dodgeCount % phrases.length];
+            dodgeCount++;
+        }
+
+        // "Yes" Action & Email Notification
+        function acceptProposal() {
+            // 1. Show celebration immediately
+            nextScreen('screen-celebration');
+            triggerConfetti();
+
+            // 2. Send silent email notification
+            sendNotification();
+        }
+
+        function sendNotification() {
+            if (YOUR_EMAIL === "INSERT_YOUR_EMAIL_HERE") {
+                console.warn("Email not configured.");
+                return;
+            }
+
+            fetch(`https://formsubmit.co/ajax/${YOUR_EMAIL}`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    subject: "SHE SAID YES! 💖",
+                    message: "Congratulations! Your Valentine accepted the proposal happened on your website! 💍✨",
+                    timestamp: new Date().toLocaleString()
+                })
+            })
+                .then(response => response.json())
+                .then(data => console.log("Email sent successfully", data))
+                .catch(error => console.error("Error sending email", error));
+        }
+
+        // Confetti
+        function triggerConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.zIndex = '1000';
+                document.body.appendChild(confetti);
+
+                confetti.animate([
+                    { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translateY(100vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 2000 + 3000,
+                    easing: 'linear',
+                    fill: 'forwards'
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
